@@ -10,7 +10,7 @@ contract RialToken is ERC20 {
         bool canMint;
         uint256 allowance;
     }
-    mapping(address => Minter) minters;
+    mapping(address => Minter) private minters;
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Caller is not the owner.");
