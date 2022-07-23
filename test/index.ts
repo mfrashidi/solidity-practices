@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
-const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
+import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 
 //Ramz Rial Token Unit-Test
 
-describe("Ramz Rial tests", function () {
+describe("Ramz Rial unit tests", function () {
   async function deployTokenFixture() {
     const [owner, addr1, addr2] = await ethers.getSigners();
 
@@ -15,14 +15,14 @@ describe("Ramz Rial tests", function () {
     return { RialToken, rialToken, owner, addr1, addr2 };
   }
 
-  it("Token deployment test-", async function () {
+  it("Token deployment", async function () {
     const { rialToken, owner } = await loadFixture(deployTokenFixture);
 
     const ownerBalance = await rialToken.balanceOf(owner.address);
     expect(await rialToken.totalSupply()).to.equal(ownerBalance);
   });
 
-  it("Token transfer test", async function () {
+  it("Token transfer", async function () {
     const { rialToken, addr1, addr2 } = await loadFixture(deployTokenFixture);
 
     await rialToken.transfer(addr1.address, 50);
