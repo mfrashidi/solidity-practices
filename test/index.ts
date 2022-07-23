@@ -31,4 +31,22 @@ describe("Ramz Rial unit tests", function () {
     await rialToken.connect(addr1).transfer(addr2.address, 50);
     expect(await rialToken.balanceOf(addr2.address)).to.equal(50);
   });
+
+  it("Minter add/remove", async function () {
+    const { rialToken, owner, addr1, addr2 } = await loadFixture(deployTokenFixture);
+
+    expect(await rialToken.connect(addr1).addMinter(addr2.address, 100))
+    .to.be.revertedWith("Caller is not the owner.");
+
+    await rialToken.connect(owner).addMinter(addr1.address, 100);
+    await rialToken.connect(addr1).mint(addr2.address, 100);
+
+    expect(await rialToken.connect(addr1).mint(addr2.address, 100))
+    .to.be.revertedWith("You don't have allowance to mint this much.");
+
+    await rialToken.connect(owner).removeMinter(addr1.address);
+
+    expect(await rialToken.connect(owner).removeMinter(addr1.address))
+    .to.be.revertedWith("This minter doesn't exist.");
+  });
 });
