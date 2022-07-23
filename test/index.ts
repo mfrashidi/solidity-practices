@@ -4,7 +4,7 @@ const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 
 //Ramz Rial Token Unit-Test
 
-describe("Ramz Rial", function () {
+describe("Ramz Rial tests", function () {
   async function deployTokenFixture() {
     const [owner, addr1, addr2] = await ethers.getSigners();
 
@@ -15,14 +15,14 @@ describe("Ramz Rial", function () {
     return { RialToken, rialToken, owner, addr1, addr2 };
   }
 
-  it("Deployment should assign the total supply of tokens to the owner", async function () {
+  it("Token deployment test-", async function () {
     const { rialToken, owner } = await loadFixture(deployTokenFixture);
 
     const ownerBalance = await rialToken.balanceOf(owner.address);
     expect(await rialToken.totalSupply()).to.equal(ownerBalance);
   });
 
-  it("Should transfer tokens between accounts", async function () {
+  it("Token transfer test", async function () {
     const { rialToken, addr1, addr2 } = await loadFixture(deployTokenFixture);
 
     await rialToken.transfer(addr1.address, 50);
