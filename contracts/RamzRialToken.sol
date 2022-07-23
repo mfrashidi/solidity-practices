@@ -33,7 +33,7 @@ contract RialToken is ERC20 {
    }
 
    function mint(address account, uint256 amount) public onlyMinters {
-       require(minters[msg.sender].allowance >= amount && msg.sender != owner, "You don't have allowance to mint this much.");
+       require(msg.sender == owner || minters[msg.sender].allowance >= amount, "You don't have allowance to mint this much.");
         _mint(account, amount);
         minters[msg.sender].allowance -= amount;
     }
