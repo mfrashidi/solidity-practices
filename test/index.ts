@@ -1,19 +1,17 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    await greeter.deployed();
+//Ramz Rial Token Unit-Test
 
-    expect(await greeter.greet()).to.equal("Hello, world!");
+describe("Ramz Rial", function () {
+  it("Deployment should assign the total supply of tokens to the owner", async function () {
+    const [owner] = await ethers.getSigners();
 
-    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+    const RialToken = await ethers.getContractFactory("RialToken");
+    const rialToken = await RialToken.deploy("Rial Token", "RamzRial", "20000000000000000000");
+    await rialToken.deployed();
 
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
-
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
+    const ownerBalance = await rialToken.balanceOf(owner.address);
+    expect(await rialToken.totalSupply()).to.equal(ownerBalance);
   });
 });
