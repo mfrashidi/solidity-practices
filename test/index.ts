@@ -1,6 +1,7 @@
-import { expect } from "chai";
+import { expect, assert } from "chai";
 import { ethers } from "hardhat";
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
+
 
 //Ramz Rial Token Unit-Test
 
@@ -48,5 +49,33 @@ describe("Ramz Rial unit tests", function () {
 
     await expect(rialToken.connect(owner).removeMinter(addr1.address))
     .to.be.revertedWith("This minter doesn't exist.");
+  });
+});
+
+describe("Homestay unit tests", function () {
+  async function deployTokenFixture() {
+    const [owner, addr1, addr2] = await ethers.getSigners();
+
+    const RialToken = await ethers.getContractFactory("RialToken");
+    const rialToken = await RialToken.deploy("Rial Token", "RamzRial", "20000000000000000000");
+    await rialToken.deployed();
+
+    const Homestay = await ethers.getContractFactory("Homestay");
+    const homestay = await Homestay.deploy(rialToken.address);
+    await homestay.deployed();
+
+    return { RialToken, rialToken, Homestay, homestay, owner, addr1, addr2 };
+  }
+
+  it("Change renting duration", async function () {
+    const { homestay, owner, addr1 } = await loadFixture(deployTokenFixture);
+
+    expect((await homestay.rentingDuration()).toNumber()).to.equal(86400);
+
+    await homestay.connect(owner).setRentingDuration("10");
+    await expect(homestay.connect(addr1).setRentingDuration("10"))
+    .to.be.revertedWith("Caller is not the owner.");
+
+    expect((await homestay.rentingDuration()).toNumber()).to.equal(10);
   });
 });
