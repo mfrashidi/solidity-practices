@@ -22,4 +22,4 @@ This repository contains the Homestay and the Ramz Rial token contracts.
 
 ## Unit Tests
 
-You can find some unit tests for the Ramz Rial token and Homestay contract in the [test/index.tx](https://github.com/mfrashidi/solidity-practices/blob/master/test/index.ts).
+You can find some unit tests for the Ramz Rial token and Homestay contract in the [test/index.tx](https://github.com/mfrashidi/solidity-practices/blob/main/test/index.ts).
